@@ -1,3 +1,4 @@
+import { UnsupportedChainIdError } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { NetworkConnector } from "@web3-react/network-connector";
 
@@ -17,3 +18,35 @@ export const network = new NetworkConnector({
 export const injected = new InjectedConnector({
   supportedChainIds: [1, 4], // todo:: add more selected chain IDs
 });
+
+// helpers
+export async function connect(activate: any, connector: any) {
+  try {
+    await activate(connector, undefined, true);
+  } catch (error) {
+    if (connector === injected && error instanceof UnsupportedChainIdError) {
+      await switchNetwork();
+      activate(injected, undefined, true);
+    } else {
+    }
+  }
+}
+
+export async function switchNetwork() {
+  const { ethereum } = global as any;
+  if (!ethereum) {
+    console.log("MetaMask extension not available");
+    return;
+  }
+
+  try {
+    await ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: `0x${Number(DEFAULT_CHAIN_ID).toString(16)}` }],
+    });
+  } catch (error: any) {
+    // This error code indicates that the chain has not been added to MetaMask.
+    if (error.code === 4902) {
+    }
+  }
+}

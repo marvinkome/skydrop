@@ -27,7 +27,7 @@ const useSetupSpace = () => {
         from: account,
         timestamp: parseInt((Date.now() / 1000).toFixed()),
         space: payload.name,
-        about: JSON.stringify(payload.about),
+        about: payload.about,
       };
 
       const data = {
@@ -39,8 +39,8 @@ const useSetupSpace = () => {
       const sig = await signer._signTypedData(data.domain, data.types, data.message);
       console.log("Sign", { address: account, sig, data });
 
-      const { payload: result } = Api().post("/space-setup", {
-        account,
+      const { payload: result } = await Api().post("/space-settings", {
+        address: account,
         sig,
         data,
       });
@@ -49,9 +49,9 @@ const useSetupSpace = () => {
       return result;
     },
     {
-      onSuccess: ({ spaceId }) => {
+      onSuccess: ({ id: spaceId }) => {
         router.push({
-          pathname: `/[spaceId]/`,
+          pathname: `/space/[spaceId]/`,
           query: { spaceId },
         });
       },
@@ -84,7 +84,7 @@ const Home = () => {
   return (
     <chakra.section minH="100vh" bgImage="url('/background.svg')" bgRepeat="no-repeat">
       <chakra.header py={1} px={10}>
-        <Image src="/logo.svg" alt="Logo" boxSize="10rem" />
+        <Image src="/logo.svg" alt="Logo" boxSize="8rem" />
       </chakra.header>
 
       <Container maxW="container.md" py={5} px={10} textAlign="center">
@@ -107,7 +107,7 @@ const Home = () => {
             <Textarea isRequired rows={5} py={4} id="about" placeholder="Say something about your community"></Textarea>
           </FormControl>
 
-          <Button type="submit" w="full" transform="scale(1.05)" size="lg" fontSize="md">
+          <Button isLoading={createSpaceMutation.isLoading} type="submit" w="full" transform="scale(1.05)" size="lg" fontSize="md">
             Create space
           </Button>
         </Stack>

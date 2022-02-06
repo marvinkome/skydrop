@@ -6,6 +6,15 @@ const theme = extendTheme({
     heading: "Open Sans, sans-serif",
   },
 
+  styles: {
+    global: {
+      body: {
+        color: "#190F33",
+        fontWeight: 500,
+      },
+    },
+  },
+
   components: {
     Input: {
       variants: {
@@ -68,6 +77,9 @@ const theme = extendTheme({
       },
     },
     Button: {
+      sizes: {
+        lg: { fontSize: "md" },
+      },
       variants: {
         solid: {
           backgroundColor: "#7E4DFF",
@@ -85,10 +97,54 @@ const theme = extendTheme({
         },
 
         outline: {
-          border: "1px solid rgb(0 0 0 / 26%)",
+          border: "1px solid rgba(25, 15, 51, 0.7)",
           backgroundColor: "transparent",
-          rounded: "0px",
-          _focus: { boxShadow: "0 0 0 1.8px rgba(0, 0, 0, 0.4)" },
+          px: 12,
+          rounded: "50px",
+          _hover: { backgroundColor: "transparent", border: "1px solid rgba(25, 15, 51, 0.9)" },
+          _focus: { boxShadow: "0 0 0 1.8px rgba(25, 15, 51, 0.4)" },
+        },
+      },
+    },
+    Checkbox: {
+      baseStyle: {
+        control: {
+          rounded: "10px",
+          bgColor: "rgba(246, 245, 250, 0.5)",
+          boxShadow: "inset 0px 0.934426px 9.34426px rgba(25, 15, 51, 0.15)",
+
+          _checked: {
+            color: "#9C76FE",
+            border: "none",
+            bgColor: "rgba(246, 245, 250, 0.5)",
+            boxShadow: "inset 0px 0.934426px 9.34426px rgba(25, 15, 51, 0.15)",
+
+            _hover: {
+              border: "none",
+              bgColor: "rgba(246, 245, 250, 0.5)",
+              boxShadow: "inset 0px 0.934426px 9.34426px rgba(25, 15, 51, 0.15)",
+            },
+
+            _focus: { boxShadow: "inset 0px 0.934426px 9.34426px rgba(25, 15, 51, 0.15)" },
+          },
+        },
+        label: {
+          fontWeight: "500",
+          ml: 4,
+        },
+      },
+
+      sizes: {
+        lg: {
+          control: {
+            width: "30px",
+            height: "30px",
+          },
+          icon: { fontSize: "0.9rem" },
+          label: { fontSize: "md" },
+        },
+        md: {
+          label: { fontSize: "sm" },
         },
       },
     },

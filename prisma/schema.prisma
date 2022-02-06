@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Space {
+  id        Int      @id @default(autoincrement())
+  name      String
+  admin     String
+  about     String
+  hash      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members Member[]
+  Quest   Quest[]
+}
+
+model Member {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String   @unique
+  hash      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  space   Space? @relation(fields: [spaceId], references: [id])
+  spaceId Int?
+
+  quests Quest[]
+}
+
+model Quest {
+  id        Int      @id @default(autoincrement())
+  title     String
+  points    Int
+  reason    String
+  hash      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  space   Space? @relation(fields: [spaceId], references: [id])
+  spaceId Int?
+
+  members Member[]
+}
